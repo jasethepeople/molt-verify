@@ -1,0 +1,1 @@
+{"bin":{"molt-verify":"./cli.mjs"},"name":"molt-verify","private":false,"scripts":{"build:samples":"node build-samples.mjs","test":"node run-tests.mjs","verify:good":"node cli.mjs samples/sample-good"},"type":"module","version":"1.0.0"}
