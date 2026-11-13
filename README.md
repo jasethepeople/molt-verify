@@ -10,7 +10,7 @@ This verifier matches the Foundry `MoltLedger` / `independent-verifier.ts` schem
 - Event hash is `sha256(prev_hash_hex + canonical(five-field body))`.
 - Ed25519 signature is over the **32 hash bytes**, not the canonical body string.
 
-An earlier draft of `molt-verify-ledger.mjs` used a seven-field body (adding `prev_hash, pub`) and signed the canonical body string. That is not Foundry and would reject every real `MoltLedger` event. The ruling is that Foundry's scheme is the standard. `molt-verify-ledger.mjs` needs the same fix in a follow-up round.
+`molt-event` and `molt-verify-ledger` now use the same Camp 1 five-field hash preimage and signature-over-hash-bytes rules as this package verifier. MOLT-CORE leaves non-ASCII canonicalization open, so the confirmed cross-implementation scope is ASCII event content.
 
 ## What it verifies
 
@@ -91,6 +91,5 @@ tampered-bad-hash-format V-09 bad field format
 Open items
 
 - Non-ASCII payloads. Foundry's stableJson escapes characters above 0x7e as \uXXXX and sorts keys by UTF-8 bytes; RFC 8785 (via molt-canonical.mjs) emits UTF-8 and sorts by UTF-16. For ASCII payloads the two agree. A real laptop-ledger event with non-ASCII payload would fail this verifier. Needs a ruling before the laptop swap if any payload is non-ASCII.
-- molt-verify-ledger.mjs still uses the seven-field / canonical-body-string scheme and will disagree with this verifier until it is fixed in a follow-up round.
 - Laptop-ledger sample swap. Samples here are locally generated, not from the laptop ledger.
 - Layer 2 second verifier plus differential fuzzing — not built.
